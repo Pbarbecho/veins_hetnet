@@ -1,0 +1,13 @@
+<launch>
+  <copy file="centro.net.xml"/>
+  
+  <copy file="centro.poly.xml"/>
+  
+  <copy file="centro.rou.xml"/>
+
+  <copy file="centro.rou.alt.xml"/>
+    
+  <copy file="trips.trips.xml"/>
+  
+  <copy file="centro.sumocfg" type="config"/>
+</launch>
