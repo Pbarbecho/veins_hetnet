@@ -45,6 +45,7 @@ network Highway
         double playgroundSizeZ @unit(m); // z size of the area the nodes are in (in meters)
         //@display("i=block/network2;bgb=842,1260;bgi=background/centro1");
 
+        @display("bgb=1390.7009,997.4379");
     submodules:
         routingRecorder: RoutingTableRecorder {
             @display("p=50,75;is=s");
@@ -64,20 +65,20 @@ network Highway
             @display("p=50,175;is=s");
         }
         server: StandardHost {
-            @display("p=660,136;is=n;i=device/server");
+            @display("p=105.45599,861.22394;is=n;i=device/server");
         }
         router: Router {
-            @display("p=561,135;i=device/smallrouter");
+            @display("p=311.97397,859.027;i=device/smallrouter");
         }
         pgw: PgwStandardSimplified {
             nodeType = "PGW";
-            @display("p=462,136;is=l");
+            @display("p=520.68896,861.22394;is=l");
         }
         eNodeB1: eNodeB {
             @display("p=155,279;is=vl");
         }
         eNodeB2: eNodeB {
-            @display("p=614,529;is=vl");
+            @display("p=1300.6239,883.194;is=vl");
         }
         //eNodeB3: eNodeB {
         //    @display("p=498,782;is=vl");
@@ -89,7 +90,7 @@ network Highway
             @display("p=50,289");
         }
 
-       
+
     connections allowunconnected:
         server.pppg++ <--> Eth10G <--> router.pppg++;
         router.pppg++ <--> Eth10G <--> pgw.filterGate;
@@ -97,14 +98,14 @@ network Highway
         pgw.pppg++ <--> Eth10G <--> eNodeB2.ppp;
         //pgw.pppg++ <--> Eth10G <--> eNodeB3.ppp;
         //pgw.pppg++ <--> Eth10G <--> eNodeB4.ppp;
-        
+
         eNodeB1.x2++ <--> Eth10G <--> eNodeB2.x2++;
         //eNodeB1.x2++ <--> Eth10G <--> eNodeB3.x2++;
         //eNodeB1.x2++ <--> Eth10G <--> eNodeB4.x2++;
-        
+
         //eNodeB2.x2++ <--> Eth10G <--> eNodeB3.x2++;
         //eNodeB2.x2++ <--> Eth10G <--> eNodeB4.x2++;
-        
+
         //eNodeB3.x2++ <--> Eth10G <--> eNodeB4.x2++;
 }
 

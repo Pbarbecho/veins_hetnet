@@ -35,10 +35,13 @@ simple HetVNetDemoApp like IUDPApp
         string destAddressLte;
         string destAddressWlan;
         int packetSize = default(10);
-        double period @unit("s") = default(0.02s);
+        double period @unit("s") = default(0.02s);  //Pablo cambio a 1 s en el omnetpp.ini
         double startTime @unit("s") = default(0s);
         string interfaceTableModule;
-               
+        string statistics = default("/root/Documents/EPN/msgs.txt");    
+        int send_N_packets = default(1);  // Pablo add number of msg to send
+        int Forwarding_nodeId = default(0); //Node that forward the packet to LTE multicas group
+        
         @signal[demoPktSent];
         @statistic[demoPktSent](title="Demo packets sent"; unit=""; source="demoPktSent"; record=sum,vector);
         @signal[demoPktRcvDelay];

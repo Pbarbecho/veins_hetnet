@@ -28,4 +28,8 @@ packet HetVNetDemoPacket
     int isWlan;
     unsigned int sequenceNo;
     simtime_t creationTime;
+    // Pablo add fields for EPN scenario
+    int sender;
+    int receiver;
+    int forward;
 }

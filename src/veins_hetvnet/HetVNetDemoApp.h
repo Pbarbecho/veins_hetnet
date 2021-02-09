@@ -33,6 +33,8 @@
 #include "inet/networklayer/common/L3AddressResolver.h"
 #include "HetVNetDemoPacket_m.h"
 
+#include <fstream>
+
 class HetVNetDemoApp : public cSimpleModule {
     inet::UDPSocket socketLte;
     inet::UDPSocket socketWlan;
@@ -51,9 +53,19 @@ class HetVNetDemoApp : public cSimpleModule {
     inet::L3Address destAddressWlan;
 
     void sendHetVNetDemoPacket();
+    // send forward message
+    void forwardHetVNetDemoPacket(HetVNetDemoPacket* pkt);
 
     simsignal_t sigDemoPktRcvDelay;
     simsignal_t sigDemoPktRcvd;
+
+    // Capture metrics
+    std::string statistics;
+    std::fstream MSG_file;
+    // Number of packets to send
+    int send_N_packets;
+    // Forwarding index
+    int Forwarding_nodeId;
 
 public:
     ~HetVNetDemoApp();
@@ -66,4 +78,5 @@ protected:
     }
     void initialize(int stage);
     void handleMessage(cMessage* msg);
+    void CaptureMSG(std::string node, std::string state, HetVNetDemoPacket* packet);
 };
