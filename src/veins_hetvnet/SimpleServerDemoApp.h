@@ -37,15 +37,17 @@
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
 
 
-
 class SimpleServerApp: public cSimpleModule {
-
       inet::UDPSocket socket;
       cMessage* sendPacket;
       int packetSizeBytes;
       simtime_t packetInterval;
       int send_N_packets;
       int nextSequenceNumber;
+      int DstAppCarPort;
+      // Capture metrics
+      std::string statistics;
+      std::fstream MSG_file;
       void sendHetVNetDemoPacket();
 
 public:
@@ -59,5 +61,5 @@ protected:
     }
     void initialize(int stage);
     void handleMessage(cMessage* msg);
-
+    void CaptureMSG(std::string node, std::string state, HetVNetDemoPacket* packet);
 };

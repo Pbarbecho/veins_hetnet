@@ -52,6 +52,9 @@ void SimpleServerApp::initialize(int stage)
     simtime_t startTime = par("startTime");
     send_N_packets = par("send_N_packets");
     nextSequenceNumber= 0;
+    DstAppCarPort = par("DstAppCarPort");
+    // Capture message statistics
+    statistics = par("statistics").stringValue();
 
     {
     socket.setOutputGate(gate("udpOut"));
@@ -68,7 +71,8 @@ void SimpleServerApp::initialize(int stage)
 
 
 void SimpleServerApp::handleMessage(cMessage *msg){
-    // Send Server message
+    // Process self and received messages
+    // Process SELFMSG
     if (msg->isSelfMessage()) {
        if (msg == sendPacket) {
            sendHetVNetDemoPacket();
@@ -79,10 +83,12 @@ void SimpleServerApp::handleMessage(cMessage *msg){
        }
    }
 
+   // Process RX MSGS
    HetVNetDemoPacket* pkt = check_and_cast<HetVNetDemoPacket*>(msg);
    if (pkt == 0) {throw cRuntimeError("Unknown packet type");}
 
-   std::cerr<<pkt->getSender()<<"  "<<simTime()<<endl;
+   //Capture received message statistics
+   CaptureMSG("server", "rx", pkt);
 
    delete msg;
 }
@@ -101,10 +107,32 @@ void SimpleServerApp::sendHetVNetDemoPacket()
         server_msg->setSender(getParentModule()->getId());
         server_msg->setDsttype("car");
         // send mesg
-        socket.sendTo(server_msg, destAddressWlan, 1000);
+        socket.sendTo(server_msg, destAddressWlan, DstAppCarPort);
     }
     //send packet and schedule the next server message as specified in omnetini packetinterval
     nextSequenceNumber++;
     scheduleAt(simTime() + packetInterval, sendPacket);
 
+}
+
+
+
+void SimpleServerApp::CaptureMSG(std::string cur_node_type, std::string state, HetVNetDemoPacket* packet)
+{
+    //Captured DATA from packet
+    std::string dsttype = packet->getDsttype();             //destination server | car
+    int nodeid = getParentModule()->getId();                //current node
+    int type = packet->getIsWlan();                         // wlan(1) or lte(0) message
+    int source = packet->getSender();                       //sender node
+    int destination = packet->getByteLength();              // bytes at omnet.ini (used for channel computations)
+    int msgID = packet->getTreeId();                        // message unique identifier
+    simtime_t creationtime = packet->getCreationTime(); // time of message creation in origin
+
+    //Save DATA to external .csv file
+    MSG_file.open(statistics, std::ios::out | std::ios::app);                                    //para leer datos ios::in
+    if (MSG_file.is_open()){
+        MSG_file<<cur_node_type<<","<<dsttype<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
+        MSG_file.close();
+    }
+    else std::cerr << "ERROR NO SE PUEDE ABRIR EL ARCHIVO  "<<statistics<< endl;
 }

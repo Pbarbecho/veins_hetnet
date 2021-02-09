@@ -43,8 +43,8 @@ network Highway
         double playgroundSizeX @unit(m); // x size of the area the nodes are in (in meters)
         double playgroundSizeY @unit(m); // y size of the area the nodes are in (in meters)
         double playgroundSizeZ @unit(m); // z size of the area the nodes are in (in meters)
+		
         //@display("i=block/network2;bgb=842,1260;bgi=background/centro1");
-
         @display("bgb=1390.7009,997.4379");
     submodules:
         routingRecorder: RoutingTableRecorder {

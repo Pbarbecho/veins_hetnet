@@ -41,6 +41,7 @@ simple HetVNetDemoApp like IUDPApp
         string statistics = default("/root/Documents/EPN/msgs.txt");    
         int send_N_packets = default(1);  // Pablo add number of msg to send
         int Forwarding_nodeId = default(0); //Node that forward the packet to LTE multicas group
+        int DstAppServerPort = default(1000); //use the same port configured for the udpapp server in omnet.ini
         
         @signal[demoPktSent];
         @statistic[demoPktSent](title="Demo packets sent"; unit=""; source="demoPktSent"; record=sum,vector);

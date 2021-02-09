@@ -66,6 +66,7 @@ class HetVNetDemoApp : public cSimpleModule {
     int send_N_packets;
     // Forwarding index
     int Forwarding_nodeId;
+    int DstAppServerPort;
 
 public:
     ~HetVNetDemoApp();
