@@ -32,4 +32,5 @@ packet HetVNetDemoPacket
     int sender;
     int receiver;
     int forward;
+    string dsttype;
 }

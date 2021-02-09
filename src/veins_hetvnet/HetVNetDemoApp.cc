@@ -24,9 +24,7 @@
 //
 
 #include <cmath>
-
 #include "HetVNetDemoApp.h"
-
 #include "inet/common/ModuleAccess.h"
 
 Define_Module(HetVNetDemoApp);
@@ -94,12 +92,11 @@ void HetVNetDemoApp::initialize(int stage)
         socketWlan.setMulticastOutputInterface(ie->getInterfaceId());
     }
 
-    // TO DO Cambio para sincronizar el envio de packetes con el packet interval
-    if (startTime > 0) {
-        sendPacket = new cMessage("sendPacket");
-        scheduleAt(simTime(), sendPacket);
-    }
+    // car scehadule the first message to startTime at omnet.ini
+    sendPacket = new cMessage("sendPacket");
+    scheduleAt(simTime()+startTime, sendPacket);
 }
+
 
 void HetVNetDemoApp::handleMessage(cMessage* msg)
 {
@@ -151,12 +148,14 @@ void HetVNetDemoApp::forwardHetVNetDemoPacket(HetVNetDemoPacket* pkt){
     packet->setByteLength(packetSizeBytes);
     packet->setSender(pkt->getSender());
     packet->setForward(getParentModule()->getId());
-
+    packet->setDsttype("server");
     //Capture forwarded message statistics
     CaptureMSG("car", "fd", packet);
 
+    //SEND PACKET TO SERVER
     //inet::L3Address server = inet::L3AddressResolver().resolve("192.168.0.1");
-    socketLte.sendTo(packet, destAddressLte_, localPortLte);
+    //socketLte.sendTo(packet, server, localPortLte);
+    //socketLte.sendTo(packet, destAddressLte_, localPortLte);
 }
 
 
@@ -174,6 +173,7 @@ void HetVNetDemoApp::sendHetVNetDemoPacket()
         packet->setCreationTime(simTime());
         packet->setByteLength(packetSizeBytes);
         packet->setSender(getParentModule()->getId());
+        packet->setDsttype("car");
 
         // Capture send message statistics
         CaptureMSG("car", "tx", packet);
@@ -189,9 +189,10 @@ void HetVNetDemoApp::sendHetVNetDemoPacket()
 }
 
 
-void HetVNetDemoApp::CaptureMSG(std::string node, std::string state, HetVNetDemoPacket* packet)
+void HetVNetDemoApp::CaptureMSG(std::string cur_node_type, std::string state, HetVNetDemoPacket* packet)
 {
     //Captured DATA from packet
+    std::string dsttype = packet->getDsttype();             //destination server | car
     int nodeid = getParentModule()->getId();                //current node
     int type = packet->getIsWlan();                         // wlan(1) or lte(0) message
     int source = packet->getSender();                       //sender node
@@ -202,7 +203,7 @@ void HetVNetDemoApp::CaptureMSG(std::string node, std::string state, HetVNetDemo
     //Save DATA to external .csv file
     MSG_file.open(statistics, std::ios::out | std::ios::app);                                    //para leer datos ios::in
     if (MSG_file.is_open()){
-        MSG_file<<node<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
+        MSG_file<<cur_node_type<<","<<dsttype<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
         MSG_file.close();
     }
     else std::cerr << "ERROR NO SE PUEDE ABRIR EL ARCHIVO  "<<statistics<< endl;

@@ -39,14 +39,13 @@
 
 
 class SimpleServerApp: public cSimpleModule {
-//protected:
-      inet::UDPSocket socket;
-//      TraCIScenarioManager* manager;
-      long receivedMessages;
-      bool debug;
-      bool infoLogging;
-      cMessage* sendPacket;
 
+      inet::UDPSocket socket;
+      cMessage* sendPacket;
+      int packetSizeBytes;
+      simtime_t packetInterval;
+      int send_N_packets;
+      int nextSequenceNumber;
       void sendHetVNetDemoPacket();
 
 public:
