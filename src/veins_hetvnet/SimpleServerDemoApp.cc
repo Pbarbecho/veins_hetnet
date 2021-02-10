@@ -90,6 +90,7 @@ void SimpleServerApp::handleMessage(cMessage *msg){
    HetVNetDemoPacket* pkt = check_and_cast<HetVNetDemoPacket*>(msg);
    if (pkt == 0) {throw cRuntimeError("Unknown packet type");}
 
+   // TO DO REPLY to sender car
 
    //Capture received message statistics
    CaptureMSG("server", "rx", pkt);

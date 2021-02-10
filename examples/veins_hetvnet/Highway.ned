@@ -43,42 +43,42 @@ network Highway
         double playgroundSizeX @unit(m); // x size of the area the nodes are in (in meters)
         double playgroundSizeY @unit(m); // y size of the area the nodes are in (in meters)
         double playgroundSizeZ @unit(m); // z size of the area the nodes are in (in meters)
-		
+
         //@display("i=block/network2;bgb=842,1260;bgi=background/centro1");
-        @display("bgb=1390.7009,997.4379");
+        @display("bgb=1898.052,1942.4879");
     submodules:
         routingRecorder: RoutingTableRecorder {
-            @display("p=50,75;is=s");
+            @display("p=1809.1799,523.70996;is=s");
         }
         configurator: IPv4NetworkConfigurator {
-            @display("p=50,125");
+            @display("p=1812.354,720.498");
             config = xmldoc("demo.xml");
         }
         veinsManager: VeinsInetManager {
-            @display("p=50,227;is=s");
+            @display("p=1812.354,885.54596;is=s");
         }
         car[0]: veins_hetvnet.simulations.Car;
         channelControl: LteChannelControl {
-            @display("p=50,25;is=s");
+            @display("p=1806.006,349.13998;is=s");
         }
         binder: LteBinder {
-            @display("p=50,175;is=s");
+            @display("p=1809.1799,1285.47;is=s");
         }
         server: StandardHost {
-            @display("p=105.45599,861.22394;is=n;i=device/server");
+            @display("p=1812.354,130.134;is=n;i=device/server");
         }
         router: Router {
-            @display("p=311.97397,859.027;i=device/smallrouter");
+            @display("p=1599.6959,126.96;i=device/smallrouter");
         }
         pgw: PgwStandardSimplified {
             nodeType = "PGW";
-            @display("p=520.68896,861.22394;is=l");
+            @display("p=1345.776,130.134;is=l");
         }
         eNodeB1: eNodeB {
-            @display("p=155,279;is=vl");
+            @display("p=174.56999,301.53;is=vl");
         }
         eNodeB2: eNodeB {
-            @display("p=1300.6239,883.194;is=vl");
+            @display("p=469.75198,1326.7319;is=vl");
         }
         //eNodeB3: eNodeB {
         //    @display("p=498,782;is=vl");
@@ -87,7 +87,7 @@ network Highway
         //    @display("p=370,1016;is=vl");
         //}
         radioMedium: Ieee80211ScalarRadioMedium {
-            @display("p=50,289");
+            @display("p=1809.1799,1044.246");
         }
 
 

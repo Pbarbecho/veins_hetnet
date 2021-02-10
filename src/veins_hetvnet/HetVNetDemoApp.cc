@@ -92,9 +92,11 @@ void HetVNetDemoApp::initialize(int stage)
         socketWlan.setMulticastOutputInterface(ie->getInterfaceId());
     }
 
-    // car scehadule the first message to startTime at omnet.ini
-    sendPacket = new cMessage("sendPacket");
-    scheduleAt(simTime()+startTime, sendPacket);
+    // car instantiate the first message just to the node with the startTime set in omnet.ini. By the default, the rest of nodes have starttime 0
+    if (startTime>0){
+        sendPacket = new cMessage("sendPacket");
+        scheduleAt(simTime()+startTime, sendPacket);
+    }
 }
 
 
@@ -154,6 +156,7 @@ void HetVNetDemoApp::forwardHetVNetDemoPacket(HetVNetDemoPacket* pkt){
     inet::L3Address server = inet::L3AddressResolver().resolve("192.168.0.1");
     socketLte.sendTo(packet, server, DstAppServerPort); //4242 server socket port
 
+    //std::cerr<<"fwd   "<<getParentModule()->getIndex()<<"   "<<simTime()<<endl;
     //Capture forwarded message statistics
     CaptureMSG("car", "fd", packet);
 
@@ -167,7 +170,10 @@ void HetVNetDemoApp::sendHetVNetDemoPacket()
     //================== SEND WLAN MSG FROM NODE[0] ==========================
     // El origen del mensaje siempre es el mismo node[o] specified in omentpp.ini
 
+
     if (nextSequenceNumber<send_N_packets){ //limita el number de msgs enviados por el nodo[0]
+
+        //std::cerr<<"tx   "<<getParentModule()->getIndex()<<"   "<<simTime()<<endl;
         HetVNetDemoPacket* packet = new HetVNetDemoPacket("WLAN");
         packet->setIsWlan(1);
         packet->setSequenceNo(nextSequenceNumber);
@@ -185,7 +191,7 @@ void HetVNetDemoApp::sendHetVNetDemoPacket()
     }
 
     nextSequenceNumber++;  // que hace ?????
-    // Schedule new message each 1s in omnet.ini  period parameter
+    // Schedule new message each packetInterval in omnet.ini  period parameter
     scheduleAt(simTime() + packetInterval, sendPacket);
 }
 
