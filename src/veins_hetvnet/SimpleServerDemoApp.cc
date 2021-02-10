@@ -53,6 +53,8 @@ void SimpleServerApp::initialize(int stage)
     send_N_packets = par("send_N_packets");
     nextSequenceNumber= 0;
     DstAppCarPort = par("DstAppCarPort");
+    // Destination IP of the forward car
+    DtsIpFwdCar = inet::L3AddressResolver().resolve(par("DtsIpFwdCar").stringValue());
     // Capture message statistics
     statistics = par("statistics").stringValue();
 
@@ -62,10 +64,11 @@ void SimpleServerApp::initialize(int stage)
     socket.bind(localPort);
     }
 
-    //schedule server message to starttime at omnet.ini
-    sendPacket = new cMessage("sendPacket");
-    scheduleAt(simTime()+startTime, sendPacket);
-
+    if (send_N_packets!=0){
+        //schedule server message to starttime at omnet.ini
+        sendPacket = new cMessage("sendPacket");
+        scheduleAt(simTime()+startTime, sendPacket);
+    }
 
 }
 
@@ -87,6 +90,7 @@ void SimpleServerApp::handleMessage(cMessage *msg){
    HetVNetDemoPacket* pkt = check_and_cast<HetVNetDemoPacket*>(msg);
    if (pkt == 0) {throw cRuntimeError("Unknown packet type");}
 
+
    //Capture received message statistics
    CaptureMSG("server", "rx", pkt);
 
@@ -99,7 +103,7 @@ void SimpleServerApp::sendHetVNetDemoPacket()
     if (nextSequenceNumber<send_N_packets){ //limita el number de msgs enviados por el nodo[0]
         //Create server demo packet
         HetVNetDemoPacket *server_msg = new HetVNetDemoPacket("server");
-        inet::L3Address destAddressWlan = inet::L3AddressResolver().resolve("10.0.1.86");
+
         //update packet fields
         server_msg->setIsWlan(0);
         server_msg->setCreationTime(simTime());
@@ -107,7 +111,7 @@ void SimpleServerApp::sendHetVNetDemoPacket()
         server_msg->setSender(getParentModule()->getId());
         server_msg->setDsttype("car");
         // send mesg
-        socket.sendTo(server_msg, destAddressWlan, DstAppCarPort);
+        socket.sendTo(server_msg, DtsIpFwdCar, DstAppCarPort); // IP and Port of the destination CAR to forward the packet
     }
     //send packet and schedule the next server message as specified in omnetini packetinterval
     nextSequenceNumber++;

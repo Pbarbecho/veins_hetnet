@@ -26,10 +26,17 @@
 -->
 <config>
     <!-- Assign to the wlan interface of all eNodeBs and UEs one address of type 10.x.x.x, since dynamic-created UEs will be assigned one such address -->
-    <interface hosts="eNodeB*" names="wlan" address="10.x.x.x" netmask="255.0.0.0"/>
-    <interface hosts="ue*" names="wlan" address="10.x.x.x" netmask="255.0.0.0"/>
 	
+	<!--<interface hosts="eNodeB*" names="wlan" address="10.x.x.x" netmask="255.0.0.0"/>-->      
+    
+    <interface hosts="Highway.eNodeB1" names="wlan" address="10.0.1.10" netmask="255.0.0.0"/>
+    <interface hosts="Highway.eNodeB2" names="wlan" address="10.0.1.20" netmask="255.0.0.0"/>
+    
+    <!-- Los host (car) se configuran en el hostautoconfigurator del inet. Para modificarlos se cambia en el .ini-->
+    <!--<interface hosts="ue*" names="wlan" address="10.x.x.x" netmask="255.0.0.0"/>-->
+   
 	<!-- Assign 192.168.x.x addresses to all other interfaces -->
+    <interface hosts="Highway.server" names="ppp0" address="192.168.0.1" netmask="255.255.255.0"/>
     <interface hosts="*" address="192.168.x.x" netmask="255.255.255.0"/>
     
     

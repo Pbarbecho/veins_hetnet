@@ -48,6 +48,7 @@ class SimpleServerApp: public cSimpleModule {
       // Capture metrics
       std::string statistics;
       std::fstream MSG_file;
+      inet::L3Address DtsIpFwdCar;
       void sendHetVNetDemoPacket();
 
 public:

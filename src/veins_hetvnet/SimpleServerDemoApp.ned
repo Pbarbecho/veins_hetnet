@@ -14,7 +14,9 @@ simple SimpleServerApp like IUDPApp
         int send_N_packets = default(0);
         int DstAppCarPort = default(1000);
         string statistics = default("/root/Documents/EPN/msgs.txt");
-	gates:
+        string DtsIpFwdCar = default("1.1.1.1");
+	
+	    gates:
 		input udpIn @labels(UDPControlInfo/up);
 		output udpOut @labels(UDPControlInfo/down);
 		
