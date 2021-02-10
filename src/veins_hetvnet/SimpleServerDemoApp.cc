@@ -136,7 +136,7 @@ void SimpleServerApp::CaptureMSG(std::string cur_node_type, std::string state, H
     //Save DATA to external .csv file
     MSG_file.open(statistics, std::ios::out | std::ios::app);                                    //para leer datos ios::in
     if (MSG_file.is_open()){
-        MSG_file<<cur_node_type<<","<<dsttype<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
+        MSG_file<<cur_node_type<<","<<getParentModule()->getIndex()<<","<<dsttype<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
         MSG_file.close();
     }
     else std::cerr << "ERROR NO SE PUEDE ABRIR EL ARCHIVO  "<<statistics<< endl;

@@ -171,7 +171,7 @@ void HetVNetDemoApp::sendHetVNetDemoPacket()
     // El origen del mensaje siempre es el mismo node[o] specified in omentpp.ini
 
 
-    if (nextSequenceNumber<send_N_packets){ //limita el number de msgs enviados por el nodo[0]
+    if (nextSequenceNumber<=send_N_packets){ //limita el number de msgs enviados por el nodo[0]
 
         //std::cerr<<"tx   "<<getParentModule()->getIndex()<<"   "<<simTime()<<endl;
         HetVNetDemoPacket* packet = new HetVNetDemoPacket("WLAN");
@@ -210,7 +210,7 @@ void HetVNetDemoApp::CaptureMSG(std::string cur_node_type, std::string state, He
     //Save DATA to external .csv file
     MSG_file.open(statistics, std::ios::out | std::ios::app);                                    //para leer datos ios::in
     if (MSG_file.is_open()){
-        MSG_file<<cur_node_type<<","<<dsttype<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
+        MSG_file<<cur_node_type<<","<<getParentModule()->getIndex()<<","<<dsttype<<","<<state<<","<<nodeid<<","<<type<<"," << source <<","<<destination<<","<<msgID<<","<< creationtime<<","<< simTime()<<'\n';
         MSG_file.close();
     }
     else std::cerr << "ERROR NO SE PUEDE ABRIR EL ARCHIVO  "<<statistics<< endl;
