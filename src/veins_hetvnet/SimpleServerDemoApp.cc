@@ -130,7 +130,7 @@ void SimpleServerApp::CaptureMSG(std::string cur_node_type, std::string state, H
     int type = packet->getIsWlan();                         // wlan(1) or lte(0) message
     int source = packet->getSender();                       //sender node
     int destination = packet->getByteLength();              // bytes at omnet.ini (used for channel computations)
-    int msgID = packet->getTreeId();                        // message unique identifier
+    int msgID = packet->getSrcTreeId();                     // message unique identifier
     simtime_t creationtime = packet->getCreationTime(); // time of message creation in origin
 
     //Save DATA to external .csv file

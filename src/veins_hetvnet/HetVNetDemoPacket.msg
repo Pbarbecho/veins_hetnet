@@ -33,4 +33,5 @@ packet HetVNetDemoPacket
     int receiver;
     int forward;
     string dsttype;
+    int srcTreeId;
 }
