@@ -151,7 +151,7 @@ void HetVNetDemoApp::forwardHetVNetDemoPacket(HetVNetDemoPacket* pkt){
     packet->setSender(pkt->getSender());
     packet->setForward(getParentModule()->getId());
     packet->setDsttype("server");
-    packet->setSrcTreeId(pkt->getTreeId());
+    packet->setSrcTreeId(pkt->getSrcTreeId());
     //SEND PACKET TO SERVER
     inet::L3Address server = inet::L3AddressResolver().resolve("192.168.0.1");
     socketLte.sendTo(packet, server, DstAppServerPort); //4242 server socket port
@@ -181,6 +181,7 @@ void HetVNetDemoApp::sendHetVNetDemoPacket()
         packet->setByteLength(packetSizeBytes);
         packet->setSender(getParentModule()->getId());
         packet->setDsttype("car");
+        packet->setSrcTreeId(packet->getTreeId());
 
         // Capture send message statistics
         CaptureMSG("car", "tx", packet);
